@@ -1,1 +1,1285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lawn Tennis Club de Nancy — Club Premium depuis 1987</title>
+<meta name="description" content="Le Lawn Tennis Club de Nancy, club premium fondé en 1987. 7 courts dont 2 couverts, école de tennis, stages et tournois. 23 rue Français, Nancy."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:#07010f;color:#f0eeff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
+/* ── VARIABLES ── */
+:root{
+  --p1:#7c3aed;--p2:#a855f7;--p3:#c084fc;
+  --pk:#ec4899;--pk2:#f472b6;
+  --grad:linear-gradient(135deg,#7c3aed,#a855f7,#ec4899);
+  --grad2:linear-gradient(135deg,#a855f7 0%,#ec4899 100%);
+  --bg:#07010f;--bg2:#0e0320;--surface:#130828;--surface2:#1c0d35;
+  --border:rgba(168,85,247,0.12);--border2:rgba(168,85,247,0.25);
+  --text:#f0eeff;--dim:rgba(240,238,255,0.5);--mute:rgba(240,238,255,0.25);
+  --ease:cubic-bezier(0.16,1,0.3,1);--ease2:cubic-bezier(0.87,0,0.13,1);
+  --r:16px;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--p2);border-radius:2px}
+::selection{background:var(--p1);color:#fff}
+
+/* ── NOISE ── */
+body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size:256px;opacity:.35}
+
+/* ── CURSOR ── */
+.cursor{position:fixed;width:8px;height:8px;background:var(--p2);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform .1s}
+.cursor-f{position:fixed;width:36px;height:36px;border:1px solid rgba(168,85,247,.4);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .15s ease,opacity .2s}
+
+/* ══════════════════════════════════════
+   INTRO
+══════════════════════════════════════ */
+#intro{position:fixed;inset:0;z-index:9000;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#intro-canvas{position:absolute;inset:0;width:100%;height:100%}
+#intro-skip{position:absolute;top:28px;right:32px;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer;transition:color .3s;z-index:10}
+#intro-skip:hover{color:rgba(168,85,247,.9)}
+#intro-counter{position:absolute;bottom:40px;left:40px;font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,12vw,10rem);color:white;line-height:1;opacity:.06;pointer-events:none;letter-spacing:-.04em}
+#intro-label{position:absolute;top:32px;left:40px;font-size:.58rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(168,85,247,.5);pointer-events:none;z-index:10}
+#intro-year{position:absolute;bottom:44px;right:40px;font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,3vw,2rem);color:rgba(255,255,255,.15);pointer-events:none;letter-spacing:.1em}
+#intro-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+#intro-logo .sub{font-size:.65rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(168,85,247,.6);margin-bottom:16px}
+#intro-logo h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,11vw,9rem);color:#fff;line-height:.9;letter-spacing:.06em;overflow:hidden}
+#intro-logo h1 span{display:inline-block;transform:translateY(110%)}
+#intro-logo .since{margin-top:16px;font-size:.65rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+#intro-logo h1{text-shadow:0 0 60px rgba(168,85,247,.25)}
+#intro-bar{position:absolute;bottom:0;left:0;height:2px;width:0%;background:var(--grad);transition:width .05s linear}
+#intro-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 85% 85% at 50% 50%,transparent 40%,rgba(0,0,0,.85) 100%);pointer-events:none;z-index:5}
+#intro-scanline{position:absolute;inset:0;pointer-events:none;z-index:6;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);opacity:.4}
+
+/* ══════════════════════════════════════
+   SCROLL PROGRESS
+══════════════════════════════════════ */
+#prog{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--grad);z-index:8999;box-shadow:0 0 12px rgba(168,85,247,.5)}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:background .4s,border .4s}
+nav.scrolled{background:rgba(7,1,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.nav-logo svg{width:34px;height:34px}
+.nav-brand-name{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.12em;background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-link{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-decoration:none;position:relative;transition:color .25s}
+.nav-link::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--p2);transition:width .3s var(--ease2)}
+.nav-link:hover{color:#fff}
+.nav-link:hover::after{width:100%}
+.nav-cta{padding:9px 22px;background:var(--grad2);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;text-decoration:none;transition:opacity .25s,transform .25s}
+.nav-cta:hover{opacity:.85;transform:translateY(-1px)}
+@media(max-width:768px){.nav-links .nav-link{display:none}}
+
+/* ══════════════════════════════════════
+   PAGE WRAPPER
+══════════════════════════════════════ */
+#page{position:relative;z-index:1;opacity:0;transition:opacity .8s ease}
+#page.ready{opacity:1}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 40px 80px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 40%,rgba(124,58,237,.18),transparent 65%),radial-gradient(ellipse 50% 50% at 20% 80%,rgba(236,72,153,.1),transparent 60%),linear-gradient(180deg,#07010f 0%,#0e0320 50%,#07010f 100%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(168,85,247,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(124,58,237,.12),transparent 70%);top:-100px;right:10%;animation:orbf 20s ease-in-out infinite}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(236,72,153,.08),transparent 70%);bottom:10%;left:10%;animation:orbf 28s ease-in-out infinite reverse}
+@keyframes orbf{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-40px) scale(1.1)}}
+.hero-content{position:relative;z-index:1;max-width:1300px;margin:0 auto;width:100%}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid var(--border2);border-radius:999px;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--p3);margin-bottom:40px;background:rgba(124,58,237,.06);backdrop-filter:blur(8px)}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--pk);box-shadow:0 0 10px var(--pk);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,14vw,14rem);line-height:.88;letter-spacing:.01em;color:#fff;margin-bottom:32px}
+.hero-h1 .line-grad{background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(.9rem,1.2vw,1.05rem);color:var(--dim);max-width:520px;line-height:1.65;font-weight:300;margin-bottom:48px}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap}
+.btn-p{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--grad2);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;border-radius:8px;text-decoration:none;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s}
+.btn-p::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease2)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(168,85,247,.35)}
+.btn-p:hover::before{transform:scaleX(1);transform-origin:left}
+.btn-g{display:inline-flex;align-items:center;gap:10px;padding:13px 31px;background:transparent;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(168,85,247,.3);cursor:pointer;border-radius:8px;text-decoration:none;transition:border-color .3s,background .3s,transform .3s var(--ease)}
+.btn-g:hover{border-color:var(--p2);background:rgba(168,85,247,.08);transform:translateY(-2px)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border);margin-top:80px}
+.hero-stat{padding:28px 0;border-right:1px solid var(--border)}
+.hero-stat:last-child{border-right:none}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hero-stat-lbl{font-size:.62rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+@media(max-width:600px){.hero-stats{grid-template-columns:repeat(2,1fr)}.hero{padding:0 20px 60px}}
+
+/* ══════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════ */
+.section{padding:120px 40px;max-width:1300px;margin:0 auto;opacity:0;transform:translateY(40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.section.vis{opacity:1;transform:translateY(0)}
+.s-wrap{padding:120px 0;overflow:hidden;position:relative}
+.s-label{display:inline-flex;align-items:center;gap:8px;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--p3);margin-bottom:20px}
+.s-label::before{content:'';width:22px;height:1px;background:var(--p2)}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);color:#fff;line-height:.92;letter-spacing:.01em;margin-bottom:24px}
+.s-title .g{background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.s-desc{color:var(--dim);font-size:.98rem;font-weight:300;line-height:1.7;max-width:540px}
+
+/* DIVIDER */
+.div-sep{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(168,85,247,.2),transparent);margin:0}
+
+/* ══════════════════════════════════════
+   ABOUT
+══════════════════════════════════════ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end}
+.about-counters{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:60px}
+.about-counter{background:var(--surface);border:1px solid var(--border);padding:32px 28px}
+.about-counter-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.about-counter-lbl{font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+.about-text-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,4.5rem);color:#fff;line-height:.95;margin-bottom:28px}
+.about-p{color:var(--dim);font-size:.95rem;font-weight:300;line-height:1.75;margin-bottom:16px}
+.values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:80px}
+.val-card{background:var(--surface);border:1px solid var(--border);padding:32px 24px;transition:border-color .3s,transform .4s var(--ease)}
+.val-card:hover{border-color:var(--p2);transform:translateY(-6px)}
+.val-icon{font-size:1.8rem;margin-bottom:16px}
+.val-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;margin-bottom:8px;letter-spacing:.04em}
+.val-desc{font-size:.82rem;color:var(--mute);line-height:1.6;font-weight:300}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}.values-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ══════════════════════════════════════
+   COURTS
+══════════════════════════════════════ */
+.courts-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;flex-wrap:wrap;gap:24px}
+.courts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.court-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;cursor:pointer;position:relative;transition:border-color .4s,transform .4s var(--ease)}
+.court-card:hover{border-color:var(--p2);transform:translateY(-4px)}
+.court-visual{height:180px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.court-visual svg{position:absolute;inset:0;width:100%;height:100%}
+.court-num{font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(255,255,255,.04);position:absolute;bottom:-10px;right:10px;line-height:1;pointer-events:none}
+.court-body{padding:24px}
+.court-count{font-family:'Bebas Neue',sans-serif;font-size:3rem;background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;float:right}
+.court-type{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--p3);margin-bottom:8px}
+.court-name{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;letter-spacing:.04em;margin-bottom:10px}
+.court-desc{font-size:.8rem;color:var(--mute);line-height:1.6;font-weight:300;margin-bottom:16px}
+.court-feats{list-style:none;display:flex;flex-direction:column;gap:6px}
+.court-feats li{font-size:.72rem;color:var(--dim);display:flex;align-items:center;gap:6px}
+.court-feats li::before{content:'';width:14px;height:1px;background:var(--p2);flex-shrink:0}
+.amenities{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:40px}
+.amenity{background:var(--surface);border:1px solid var(--border);padding:24px 16px;text-align:center;transition:border-color .3s,transform .35s var(--ease)}
+.amenity:hover{border-color:var(--p2);transform:translateY(-4px)}
+.amenity-icon{font-size:1.6rem;margin-bottom:10px}
+.amenity-name{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.hours-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);padding:48px 48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-top:40px;position:relative;overflow:hidden}
+.hours-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad2)}
+.hours-label{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--p3);margin-bottom:12px}
+.hours-val{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;line-height:1}
+@media(max-width:900px){.courts-grid{grid-template-columns:1fr}.amenities{grid-template-columns:repeat(3,1fr)}.hours-banner{grid-template-columns:1fr;padding:32px 24px}}
+
+/* ══════════════════════════════════════
+   SCHOOL
+══════════════════════════════════════ */
+.school-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:48px}
+.school-card{background:var(--surface);border:1px solid var(--border);padding:32px 24px;position:relative;overflow:hidden;transition:border-color .4s,transform .4s var(--ease)}
+.school-card::before{content:'';position:absolute;inset-x:0;bottom:0;height:0;background:linear-gradient(to top,rgba(168,85,247,.08),transparent);transition:height .5s var(--ease)}
+.school-card:hover::before{height:100%}
+.school-card:hover{border-color:var(--p2);transform:translateY(-6px)}
+.school-age{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--p3);border:1px solid var(--border2);padding:4px 10px;display:inline-block;margin-bottom:20px}
+.school-level{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.school-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;letter-spacing:.04em;margin-bottom:12px;transition:color .3s}
+.school-card:hover .school-name{background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.school-bar{width:28px;height:2px;background:var(--p2);margin-bottom:14px;transition:width .4s var(--ease)}
+.school-card:hover .school-bar{width:48px}
+.school-desc{font-size:.8rem;color:var(--mute);line-height:1.65;font-weight:300;margin-bottom:18px}
+.school-tags{display:flex;flex-direction:column;gap:5px}
+.school-tags li{font-size:.7rem;color:var(--dim);display:flex;align-items:center;gap:6px;list-style:none}
+.school-tags li svg{flex-shrink:0}
+@media(max-width:900px){.school-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.school-grid{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════
+   STAGES
+══════════════════════════════════════ */
+.stages-list{margin-top:48px;border-top:1px solid var(--border)}
+.stage-row{display:grid;grid-template-columns:60px 160px 1fr 1fr auto;gap:24px;align-items:center;padding:28px 0;border-bottom:1px solid var(--border);transition:background .3s;cursor:default;position:relative}
+.stage-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(168,85,247,.04);transition:width .4s var(--ease)}
+.stage-row:hover::before{width:100%}
+.stage-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(255,255,255,.07);line-height:1;transition:color .3s}
+.stage-row:hover .stage-num{color:rgba(168,85,247,.25)}
+.stage-period{font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--p3)}
+.stage-target{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+.stage-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;letter-spacing:.03em;transition:background .3s,-webkit-background-clip .3s}
+.stage-row:hover .stage-title{background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stage-desc{font-size:.8rem;color:var(--mute);line-height:1.6;font-weight:300}
+.stage-badge{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border2);color:var(--p3);white-space:nowrap}
+@media(max-width:768px){.stage-row{grid-template-columns:1fr;gap:8px}}
+
+/* ══════════════════════════════════════
+   TOURNAMENTS
+══════════════════════════════════════ */
+.tourn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:48px}
+.tourn-card{background:var(--surface);border:1px solid var(--border);padding:40px 36px;position:relative;overflow:hidden;transition:border-color .4s,transform .4s var(--ease)}
+.tourn-card:hover{border-color:var(--p2);transform:translateY(-4px)}
+.tourn-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad2);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease2)}
+.tourn-card:hover .tourn-line{transform:scaleX(1)}
+.tourn-month{font-family:'Bebas Neue',sans-serif;font-size:5rem;color:rgba(255,255,255,.05);line-height:1;margin-bottom:4px;transition:color .4s}
+.tourn-card:hover .tourn-month{color:rgba(168,85,247,.15)}
+.tourn-type{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--p3);border:1px solid var(--border2);padding:3px 10px;display:inline-block;margin-bottom:14px}
+.tourn-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;letter-spacing:.04em;margin-bottom:12px;transition:color .3s}
+.tourn-card:hover .tourn-title{background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.tourn-bar{width:28px;height:2px;background:var(--p2);margin-bottom:14px}
+.tourn-desc{font-size:.82rem;color:var(--mute);line-height:1.65;font-weight:300}
+.tourn-cta{background:var(--grad2);color:#fff;border:none;padding:56px 40px;display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;overflow:hidden;transition:opacity .3s}
+.tourn-cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;line-height:.95;letter-spacing:.03em}
+@media(max-width:768px){.tourn-grid{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════
+   PRICING
+══════════════════════════════════════ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px}
+.price-card{background:var(--surface);border:1px solid var(--border);padding:40px 32px;position:relative;overflow:hidden;transition:border-color .4s,transform .4s var(--ease)}
+.price-card:hover{border-color:var(--p2);transform:translateY(-6px)}
+.price-card.feat{background:var(--grad2);border-color:transparent}
+.price-tag{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.price-card.feat .price-tag{color:rgba(255,255,255,.7)}
+.price-card:not(.feat) .price-tag{color:var(--p3)}
+.price-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;letter-spacing:.04em;margin-bottom:28px}
+.price-val{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;line-height:1;margin-bottom:6px}
+.price-per{font-size:.72rem;color:rgba(255,255,255,.5);font-weight:400;margin-bottom:28px}
+.price-sep{height:1px;background:rgba(255,255,255,.1);margin-bottom:24px}
+.price-desc{font-size:.82rem;line-height:1.65;font-weight:300;margin-bottom:24px}
+.price-card.feat .price-desc{color:rgba(255,255,255,.75)}
+.price-card:not(.feat) .price-desc{color:var(--mute)}
+.price-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
+.price-feats li{font-size:.78rem;display:flex;align-items:center;gap:8px}
+.price-card.feat .price-feats li{color:rgba(255,255,255,.85)}
+.price-card:not(.feat) .price-feats li{color:var(--dim)}
+.price-feats li svg{flex-shrink:0}
+.price-btn{width:100%;padding:14px;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:all .3s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px}
+.price-card.feat .price-btn{background:rgba(255,255,255,.95);color:var(--p1)}
+.price-card.feat .price-btn:hover{background:#fff}
+.price-card:not(.feat) .price-btn{background:var(--grad2);color:#fff}
+.price-card:not(.feat) .price-btn:hover{opacity:.85}
+@media(max-width:768px){.pricing-grid{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════
+   GALLERY
+══════════════════════════════════════ */
+.gallery-masonry{columns:3;gap:3px;column-fill:balance;margin-top:48px}
+.gallery-item{break-inside:avoid;margin-bottom:3px;position:relative;overflow:hidden;cursor:pointer;background:var(--surface);border:1px solid var(--border)}
+.gallery-item:hover{border-color:var(--p2)}
+.gallery-placeholder{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.gallery-placeholder svg{position:absolute;inset:0;width:100%;height:100%;opacity:.15;transition:opacity .4s}
+.gallery-item:hover .gallery-placeholder svg{opacity:.35}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,1,15,.9),transparent);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:16px}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.gallery-lbl{font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.gallery-zoom{position:absolute;top:12px;right:12px;width:32px;height:32px;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.gallery-item:hover .gallery-zoom{opacity:1}
+@media(max-width:768px){.gallery-masonry{columns:2}}
+@media(max-width:480px){.gallery-masonry{columns:1}}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.97);align-items:center;justify-content:center;padding:40px}
+.lightbox.open{display:flex}
+.lightbox-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border:1px solid rgba(255,255,255,.15);background:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s;border-radius:4px}
+.lightbox-close:hover{border-color:var(--p2);color:var(--p2)}
+.lightbox-content{max-width:900px;width:100%;border:1px solid var(--border);background:var(--surface);padding:20px}
+
+/* ══════════════════════════════════════
+   CONTACT
+══════════════════════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 2fr;gap:60px;margin-top:60px}
+.contact-info-item{margin-bottom:40px}
+.ci-label{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--p3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ci-label::before{content:'';width:16px;height:1px;background:var(--p2)}
+.ci-val{color:var(--text);font-size:.95rem;font-weight:400;line-height:1.7}
+.ci-val a{color:var(--dim);text-decoration:none;transition:color .2s}
+.ci-val a:hover{color:var(--p3)}
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cf-group{display:flex;flex-direction:column;gap:8px}
+.cf-label{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.cf-input,.cf-select,.cf-textarea{background:var(--surface);border:1px solid var(--border);color:#fff;padding:12px 16px;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .25s;border-radius:4px}
+.cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:var(--p2)}
+.cf-select option{background:var(--surface)}
+.cf-textarea{resize:vertical;min-height:140px}
+.cf-input::placeholder,.cf-textarea::placeholder{color:var(--mute)}
+.cf-submit{padding:14px 36px;background:var(--grad2);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;align-self:flex-end;transition:opacity .25s,transform .3s var(--ease)}
+.cf-submit:hover{opacity:.85;transform:translateY(-2px)}
+.cf-success{text-align:center;padding:60px 40px;border:1px solid var(--border2)}
+.cf-success-icon{width:56px;height:56px;border:1px solid var(--p2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border-radius:6px;color:var(--p2);font-size:22px}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}.cf-row{grid-template-columns:1fr}}
+@media(max-width:600px){.section{padding:80px 20px}.s-wrap{padding:80px 0}}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer{border-top:1px solid var(--border);padding:80px 40px 40px;background:var(--bg2)}
+.footer-inner{max-width:1300px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+.footer-brand-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.12em;background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+.footer-brand-desc{font-size:.82rem;color:var(--mute);line-height:1.7;font-weight:300;max-width:280px;margin-bottom:24px}
+.footer-contact a{display:block;font-size:.8rem;color:var(--mute);text-decoration:none;line-height:2;transition:color .2s}
+.footer-contact a:hover{color:var(--p3)}
+.footer-col-title{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:20px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:.82rem;color:var(--mute);text-decoration:none;font-weight:300;transition:color .2s}
+.footer-links a:hover{color:var(--p3)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:.68rem;color:var(--mute);letter-spacing:.06em}
+.footer-status{display:flex;align-items:center;gap:6px;font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.footer-status .dot{width:6px;height:6px;border-radius:50%;background:var(--p2);animation:pulse 2s ease-in-out infinite}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column}}
+
+/* ══════════════════════════════════════
+   REVEAL ANIM
+══════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-f" id="curf"></div>
+
+<!-- SCROLL PROGRESS -->
+<div id="prog"></div>
+
+<!-- ══════════════════════════════════════
+     INTRO CINÉMATIQUE (Three.js)
+══════════════════════════════════════ -->
+<div id="intro">
+  <canvas id="intro-canvas"></canvas>
+  <div id="intro-vignette"></div>
+  <div id="intro-scanline"></div>
+  <button id="intro-skip">Skip <span style="color:var(--p2)">→</span></button>
+  <div id="intro-label">Nancy · France · Est. 1987</div>
+  <div id="intro-counter">0</div>
+  <div id="intro-year">— 1987 —</div>
+  <div id="intro-logo">
+    <div class="sub">Club Premium · Nancy</div>
+    <h1>
+      <span>LAWN</span><br>
+      <span style="background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">TENNIS</span><br>
+      <span>CLUB</span>
+    </h1>
+    <div class="since">Fondé en 1987 · Nancy 54000</div>
+  </div>
+  <div id="intro-bar"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#hero" class="nav-brand">
+    <div class="nav-logo">
+      <svg viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="16" stroke="url(#ng)" stroke-width="1.5"/>
+        <path d="M7 17h20M17 7v20" stroke="url(#ng)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M10 10l14 14M24 10L10 24" stroke="url(#ng2)" stroke-width=".8" stroke-linecap="round" opacity=".6"/>
+        <defs>
+          <linearGradient id="ng" x1="0" y1="0" x2="34" y2="34"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+          <linearGradient id="ng2" x1="0" y1="0" x2="34" y2="34"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <span class="nav-brand-name">LTC NANCY</span>
+  </a>
+  <div class="nav-links">
+    <a href="#about" class="nav-link">Club</a>
+    <a href="#courts" class="nav-link">Installations</a>
+    <a href="#school" class="nav-link">École</a>
+    <a href="#stages" class="nav-link">Stages</a>
+    <a href="#pricing" class="nav-link">Tarifs</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">Rejoindre le club</a>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE CONTENT
+══════════════════════════════════════ -->
+<div id="page">
+
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-gradient"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag"><div class="dot"></div>Nancy · France · Club Premium depuis 1987</div>
+    <h1 class="hero-h1">
+      LAWN<br>
+      <span class="line-grad">TENNIS</span><br>
+      CLUB
+    </h1>
+    <p class="hero-sub">7 courts, école de tennis, stages et tournois dans le quartier calme de Buthegnémont. Ouvert 7j/7 de 07h à 22h.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-p"><span>Rejoindre le club</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#courts" class="btn-g"><span>Nos installations</span></a>
+      <a href="tel:0383985539" class="btn-g" style="border-color:rgba(168,85,247,.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12 19.79 19.79 0 0 1 .99 3.37 2 2 0 0 1 2.97 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>03 83 98 55 39</span></a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">1987</div><div class="hero-stat-lbl">Fondation</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">7</div><div class="hero-stat-lbl">Courts</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-lbl">Courts couverts</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">07–22h</div><div class="hero-stat-lbl">Ouverture quotidienne</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div-sep">
+
+<!-- ── ABOUT ── -->
+<div class="s-wrap" id="about" style="background:var(--bg2)">
+<div class="section">
+  <div class="about-grid">
+    <div>
+      <div class="s-label">Le club</div>
+      <div class="about-text-big">Une passion<br><span style="background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">partagée</span><br>depuis 1987.</div>
+      <p class="about-p">Situé dans le quartier verdoyant de Buthegnémont à Nancy, le Lawn Tennis Club est bien plus qu'un club sportif. C'est un lieu de vie, de rencontres et de progression partagée depuis plus de 37 ans.</p>
+      <p class="about-p">Avec 7 courts dont 2 couverts, une équipe de 6 à 9 salariés passionnés et un club house chaleureux, nous offrons une expérience tennistique complète dans un cadre exceptionnel.</p>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:28px">
+        <div style="width:28px;height:1px;background:var(--p2)"></div>
+        <span style="font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)">23 rue Français · 54000 Nancy</span>
+      </div>
+      <div class="about-counters">
+        <div class="about-counter"><div class="about-counter-num" data-count="37">0</div><div class="about-counter-lbl">Années d'expérience</div></div>
+        <div class="about-counter"><div class="about-counter-num" data-count="7">0</div><div class="about-counter-lbl">Courts de tennis</div></div>
+        <div class="about-counter"><div class="about-counter-num" data-count="5">0</div><div class="about-counter-lbl">Courts extérieurs</div></div>
+        <div class="about-counter"><div class="about-counter-num" data-count="2">0</div><div class="about-counter-lbl">Courts couverts</div></div>
+      </div>
+    </div>
+    <div>
+      <!-- Court 3D SVG illustration -->
+      <div style="background:var(--surface);border:1px solid var(--border);aspect-ratio:4/3;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 500 340" style="width:90%;opacity:.7">
+          <!-- Court perspective -->
+          <defs>
+            <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a855f7" stop-opacity=".3"/><stop offset="1" stop-color="#ec4899" stop-opacity=".05"/></linearGradient>
+          </defs>
+          <rect x="30" y="20" width="440" height="300" fill="url(#cg)" rx="4"/>
+          <rect x="30" y="20" width="440" height="300" fill="none" stroke="rgba(168,85,247,.4)" stroke-width="2"/>
+          <line x1="30" y1="170" x2="470" y2="170" stroke="rgba(168,85,247,.3)" stroke-width="1.5"/>
+          <line x1="250" y1="20" x2="250" y2="320" stroke="rgba(168,85,247,.2)" stroke-width="1"/>
+          <line x1="30" y1="95" x2="470" y2="95" stroke="rgba(168,85,247,.2)" stroke-width="1"/>
+          <line x1="30" y1="245" x2="470" y2="245" stroke="rgba(168,85,247,.2)" stroke-width="1"/>
+          <!-- Net -->
+          <line x1="30" y1="170" x2="470" y2="170" stroke="rgba(240,238,255,.15)" stroke-width="3" stroke-dasharray="8,4"/>
+          <!-- Ball -->
+          <circle cx="320" cy="130" r="14" fill="rgba(168,85,247,.6)" filter="url(#glow)"/>
+          <circle cx="320" cy="130" r="12" fill="#c084fc"/>
+          <path d="M312 126 q4,-6 16,0" stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none"/>
+          <path d="M312 134 q4,6 16,0" stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none"/>
+          <defs><filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        </svg>
+        <div style="position:absolute;bottom:16px;right:16px;font-size:.58rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)">LTC Nancy · 7 courts</div>
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad2)"></div>
+      </div>
+    </div>
+  </div>
+  <div class="values-grid">
+    <div class="val-card"><div class="val-icon">❤</div><div class="val-title">Esprit familial</div><div class="val-desc">Atmosphère chaleureuse et bienveillante. Tout le monde se connaît.</div></div>
+    <div class="val-card"><div class="val-icon">🎾</div><div class="val-title">Pour tous</div><div class="val-desc">Du débutant au compétiteur, du jeune enfant au senior.</div></div>
+    <div class="val-card"><div class="val-icon">⚡</div><div class="val-title">Performance</div><div class="val-desc">Encadrement professionnel, installations top niveau.</div></div>
+    <div class="val-card"><div class="val-icon">🌿</div><div class="val-title">Cadre premium</div><div class="val-desc">Quartier résidentiel verdoyant, calme et lumineux.</div></div>
+  </div>
+</div>
+</div>
+
+<hr class="div-sep">
+
+<!-- ── COURTS ── -->
+<div class="s-wrap" id="courts">
+<div class="section">
+  <div class="courts-header">
+    <div>
+      <div class="s-label">Installations</div>
+      <h2 class="s-title">7 courts.<br><span class="g">Votre terrain</span><br>vous attend.</h2>
+    </div>
+    <p class="s-desc" style="max-width:320px">Ouvert 7j/7 de 07h à 22h. Location de courts à l'heure disponible pour membres et non-membres.</p>
+  </div>
+  <div class="courts-grid">
+    <div class="court-card">
+      <div class="court-visual" style="background:linear-gradient(135deg,#1a0a35,#2d1060)">
+        <svg viewBox="0 0 300 180"><rect x="20" y="15" width="260" height="150" fill="none" stroke="rgba(168,85,247,.3)" stroke-width="1.5"/><line x1="20" y1="90" x2="280" y2="90" stroke="rgba(168,85,247,.25)" stroke-width="1"/><line x1="150" y1="15" x2="150" y2="165" stroke="rgba(168,85,247,.15)" stroke-width=".8"/><line x1="20" y1="52" x2="280" y2="52" stroke="rgba(168,85,247,.15)" stroke-width=".8"/><line x1="20" y1="128" x2="280" y2="128" stroke="rgba(168,85,247,.15)" stroke-width=".8"/></svg>
+        <div class="court-num">5</div>
+      </div>
+      <div class="court-body">
+        <div class="court-count">5</div>
+        <div class="court-type">Extérieur</div>
+        <div class="court-name">Terre Battue</div>
+        <div class="court-desc">Surface premium idéale pour progresser. Entretien quotidien, éclairage disponible.</div>
+        <ul class="court-feats"><li>Éclairage disponible</li><li>Entretien quotidien</li><li>Surface classique</li></ul>
+      </div>
+    </div>
+    <div class="court-card">
+      <div class="court-visual" style="background:linear-gradient(135deg,#0a1535,#0d2060)">
+        <svg viewBox="0 0 300 180"><rect x="20" y="15" width="260" height="150" fill="none" stroke="rgba(79,142,255,.3)" stroke-width="1.5"/><line x1="20" y1="90" x2="280" y2="90" stroke="rgba(79,142,255,.25)" stroke-width="1"/><line x1="150" y1="15" x2="150" y2="165" stroke="rgba(79,142,255,.15)" stroke-width=".8"/><line x1="20" y1="52" x2="280" y2="52" stroke="rgba(79,142,255,.15)" stroke-width=".8"/><line x1="20" y1="128" x2="280" y2="128" stroke="rgba(79,142,255,.15)" stroke-width=".8"/></svg>
+        <div class="court-num">2</div>
+      </div>
+      <div class="court-body">
+        <div class="court-count">2</div>
+        <div class="court-type">Extérieur</div>
+        <div class="court-name">Surface Dure</div>
+        <div class="court-desc">Courts polyvalents idéaux pour la compétition et l'usage intensif.</div>
+        <ul class="court-feats"><li>Surface rapide</li><li>Tout niveau</li><li>Usage intensif</li></ul>
+      </div>
+    </div>
+    <div class="court-card" style="border-color:rgba(168,85,247,.25)">
+      <div class="court-visual" style="background:linear-gradient(135deg,#1f0a35,#3d1080)">
+        <svg viewBox="0 0 300 180"><rect x="20" y="15" width="260" height="150" fill="none" stroke="rgba(192,132,252,.5)" stroke-width="1.5"/><line x1="20" y1="90" x2="280" y2="90" stroke="rgba(192,132,252,.4)" stroke-width="1"/><line x1="150" y1="15" x2="150" y2="165" stroke="rgba(192,132,252,.25)" stroke-width=".8"/><line x1="20" y1="52" x2="280" y2="52" stroke="rgba(192,132,252,.25)" stroke-width=".8"/><line x1="20" y1="128" x2="280" y2="128" stroke="rgba(192,132,252,.25)" stroke-width=".8"/></svg>
+        <div class="court-num" style="color:rgba(168,85,247,.1)">2</div>
+      </div>
+      <div class="court-body">
+        <div class="court-count" style="background:var(--grad2);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">2</div>
+        <div class="court-type" style="color:var(--p3)">Intérieur · Toute saison</div>
+        <div class="court-name">Couverts</div>
+        <div class="court-desc">Jouez toute l'année quelle que soit la météo. Accessibles dès 7h chaque matin.</div>
+        <ul class="court-feats"><li>Toute saison</li><li>Chauffage inclus</li><li>Réservation possible</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="hours-banner">
+    <div><div class="hours-label">Horaires d'ouverture</div><div class="hours-val">07:00 → 22:00</div><div style="font-size:.72rem;color:var(--mute);margin-top:8px">7 jours sur 7 · Toute l'année</div></div>
+    <div><div class="hours-label">Location à l'heure</div><p style="font-size:.85rem;color:var(--dim);line-height:1.7;font-weight:300">Courts disponibles pour les membres et non-membres. Réservation au secrétariat ou par téléphone.</p></div>
+    <div><div class="hours-label">Réservation</div><p style="font-size:.85rem;color:var(--dim);line-height:1.7;font-weight:300;margin-bottom:20px">Appelez-nous ou envoyez un email pour réserver votre créneau.</p><a href="tel:0383985539" class="btn-p" style="font-size:.68rem;padding:11px 24px"><span>03 83 98 55 39</span></a></div>
+  </div>
+  <div class="amenities">
+    <div class="amenity"><div class="amenity-icon">🏠</div><div class="amenity-name">Club House</div></div>
+    <div class="amenity"><div class="amenity-icon">☕</div><div class="amenity-name">Bar & Terrasse</div></div>
+    <div class="amenity"><div class="amenity-icon">💪</div><div class="amenity-name">Musculation</div></div>
+    <div class="amenity"><div class="amenity-icon">🚿</div><div class="amenity-name">Vestiaires</div></div>
+    <div class="amenity"><div class="amenity-icon">🔐</div><div class="amenity-name">Accès sécurisé</div></div>
+    <div class="amenity"><div class="amenity-icon">🅿</div><div class="amenity-name">Parking</div></div>
+  </div>
+</div>
+</div>
+
+<hr class="div-sep">
+
+<!-- ── SCHOOL ── -->
+<div class="s-wrap" id="school" style="background:var(--bg2)">
+<div class="section">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:0">
+    <div>
+      <div class="s-label">École de Tennis</div>
+      <h2 class="s-title">Apprendre.<br><span class="g">Progresser.</span><br>Exceller.</h2>
+    </div>
+    <div>
+      <p class="s-desc">Enseignants diplômés d'État. Cours adaptés à chaque âge et niveau. Progressez dans la bonne humeur, du mini-tennis au perfectionnement adulte.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+        <span style="font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--p3);border:1px solid var(--border2);padding:4px 10px">Cours individuels</span>
+        <span style="font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--p3);border:1px solid var(--border2);padding:4px 10px">Cours collectifs</span>
+        <span style="font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--p3);border:1px solid var(--border2);padding:4px 10px">Diplômés d'État</span>
+      </div>
+    </div>
+  </div>
+  <div class="school-grid">
+    <div class="school-card"><div class="school-age">5 – 10 ans</div><div class="school-level">Initiation · Loisir</div><div class="school-name">Mini Tennis</div><div class="school-bar"></div><div class="school-desc">Initiation ludique avec matériel adapté. Développement de la coordination et de l'esprit sportif.</div><ul class="school-tags"><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Matériel adapté</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Groupes réduits</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Progression par étapes</li></ul></div>
+    <div class="school-card"><div class="school-age">10 – 15 ans</div><div class="school-level">Tous niveaux</div><div class="school-name">École Junior</div><div class="school-bar"></div><div class="school-desc">Technique, tactique et préparation physique. Option compétition fédérale disponible.</div><ul class="school-tags"><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Technique & tactique</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Prépa physique</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Option compétition</li></ul></div>
+    <div class="school-card" style="border-color:rgba(168,85,247,.25)"><div class="school-age">Adultes</div><div class="school-level">Débutant → Avancé</div><div class="school-name">École Adultes</div><div class="school-bar"></div><div class="school-desc">Cours collectifs ou individuels adaptés à votre niveau. Progressez à votre rythme.</div><ul class="school-tags"><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Cours collectifs</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Cours individuels</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Tous niveaux</li></ul></div>
+    <div class="school-card"><div class="school-age">Tous âges</div><div class="school-level">Loisir · Social</div><div class="school-name">Tennis Loisir</div><div class="school-bar"></div><div class="school-desc">Créneaux conviviaux pour jouer entre amis ou faire de nouvelles rencontres.</div><ul class="school-tags"><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Ambiance conviviale</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Sans pression</li><li><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#a855f7" stroke-width="1"/><path d="M3.5 6l2 2 3-3" stroke="#a855f7" stroke-width="1" stroke-linecap="round"/></svg>Social & fun</li></ul></div>
+  </div>
+</div>
+</div>
+
+<hr class="div-sep">
+
+<!-- ── STAGES ── -->
+<div class="s-wrap" id="stages">
+<div class="section">
+  <div class="s-label">Stages & Formations</div>
+  <h2 class="s-title">Des stages<br><span class="g">pour tous</span><br>les niveaux.</h2>
+  <div class="stages-list">
+    <div class="stage-row"><div class="stage-num">01</div><div><div class="stage-period">Vacances scolaires</div><div class="stage-target">5 – 17 ans</div></div><div class="stage-title">Stages Jeunes</div><div class="stage-desc">Intensif pendant les vacances. Progression rapide, jeu en équipe et ambiance garantie.</div><div class="stage-badge">1 semaine</div></div>
+    <div class="stage-row" style="background:rgba(168,85,247,.03)"><div class="stage-num">02</div><div><div class="stage-period">Juillet · Août</div><div class="stage-target">Jeunes & Adultes</div></div><div class="stage-title">Stage d'Été ⭐</div><div class="stage-desc">Le grand rendez-vous de l'été. Entraînement intensif + activités estivales.</div><div class="stage-badge" style="border-color:var(--p2);color:var(--p2)">1–2 semaines</div></div>
+    <div class="stage-row"><div class="stage-num">03</div><div><div class="stage-period">Toute l'année</div><div class="stage-target">Adultes</div></div><div class="stage-title">Stages Adultes</div><div class="stage-desc">Perfectionnement technique, préparation compétition ou progression en ambiance détendue.</div><div class="stage-badge">Week-end · Semaine</div></div>
+  </div>
+  <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+    <a href="tel:0383985539" class="btn-p"><span>Renseignements stages</span></a>
+    <a href="mailto:lawn.nancy@gmail.com" class="btn-g"><span>lawn.nancy@gmail.com</span></a>
+  </div>
+</div>
+</div>
+
+<hr class="div-sep">
+
+<!-- ── TOURNAMENTS ── -->
+<div class="s-wrap" id="tournaments" style="background:var(--bg2)">
+<div class="section">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:48px">
+    <div><div class="s-label">Tournois & Événements</div><h2 class="s-title">Le club<br><span class="g">qui vit</span><br>toute l'année.</h2></div>
+    <p class="s-desc">Tournois officiels, opens, animations internes... Un calendrier riche pour compétiteurs et joueurs loisir.</p>
+  </div>
+  <div class="tourn-grid">
+    <div class="tourn-card"><div class="tourn-line"></div><div class="tourn-month">JUI</div><div class="tourn-type">Tournoi officiel · Jeunes</div><div class="tourn-title">Tournoi Jeunes Été</div><div class="tourn-bar"></div><div class="tourn-desc">Grand tournoi annuel de l'école de tennis. Compétition amicale et festive pour tous les jeunes licenciés.</div></div>
+    <div class="tourn-card"><div class="tourn-line"></div><div class="tourn-month">AOÛ</div><div class="tourn-type">Open du club · Adultes</div><div class="tourn-title">Open Adultes Été</div><div class="tourn-bar"></div><div class="tourn-desc">L'open adultes accueille les joueurs de la région. Ambiance compétitive et conviviale. Toutes séries bienvenues.</div></div>
+    <div class="tourn-card"><div class="tourn-line"></div><div class="tourn-month">SEP</div><div class="tourn-type">Tournoi interne · Membres</div><div class="tourn-title">Tournoi de la Rentrée</div><div class="tourn-bar"></div><div class="tourn-desc">Réservé aux membres. L'occasion de se (re)découvrir après l'été dans une ambiance chaleureuse.</div></div>
+    <div class="tourn-cta">
+      <div style="font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px">Toute l'année</div>
+      <div class="tourn-cta-title">Animations<br>& Journées Club</div>
+      <p style="font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.65;font-weight:300">Barbecues, journées à thème, animations régulières pour fédérer les membres.</p>
+      <a href="#contact" class="btn-g" style="border-color:rgba(255,255,255,.3);color:#fff;margin-top:8px;display:inline-flex"><span>Rejoindre le club</span></a>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="div-sep">
+
+<!-- ── PRICING ── -->
+<div class="s-wrap" id="pricing">
+<div class="section">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px">
+    <div><div class="s-label">Tarifs & Adhésions</div><h2 class="s-title">Rejoignez<br><span class="g">le club.</span></h2></div>
+    <div style="max-width:320px;text-align:right"><p style="font-size:.85rem;color:var(--dim);line-height:1.7;font-weight:300">Saison du <strong style="color:#fff">15 avril</strong> au <strong style="color:#fff">15 avril</strong>. Inscription toute l'année, tarif proratisé. Paiement en plusieurs fois disponible.</p></div>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tag">Junior · &lt; 18 ans</div>
+      <div class="price-name">Adhésion Junior</div>
+      <div class="price-val">Sur devis</div>
+      <div class="price-per">tarif selon âge · à l'année</div>
+      <div class="price-sep"></div>
+      <p class="price-desc">Accès complet + option école de tennis. Tarif familial disponible.</p>
+      <ul class="price-feats">
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Courts extérieurs & couverts</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Vestiaires & club house</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Option école de tennis</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Tarif familial possible</li>
+      </ul>
+      <a href="#contact" class="price-btn">Nous contacter</a>
+    </div>
+    <div class="price-card feat">
+      <div style="position:absolute;top:16px;right:16px;font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.2);color:#fff;padding:4px 10px">Recommandé</div>
+      <div class="price-tag">Adulte · 18 ans +</div>
+      <div class="price-name">Adhésion Adulte</div>
+      <div class="price-val">Sur devis</div>
+      <div class="price-per">à l'année · tout compris</div>
+      <div class="price-sep"></div>
+      <p class="price-desc">Accès illimité à toutes les installations. La formule complète pour les passionnés.</p>
+      <ul class="price-feats">
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.7)" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>Tous les courts</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.7)" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>Salle de musculation</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.7)" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>Vestiaires & douches</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.7)" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>Club house & bar & terrasse</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.7)" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>Option cours disponible</li>
+      </ul>
+      <a href="#contact" class="price-btn">Nous contacter</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tag">Occasionnel · Tous âges</div>
+      <div class="price-name">Location Court</div>
+      <div class="price-val">À l'heure</div>
+      <div class="price-per">par réservation · sans engagement</div>
+      <div class="price-sep"></div>
+      <p class="price-desc">Venez jouer ponctuellement. Idéal pour découvrir le club sans engagement.</p>
+      <ul class="price-feats">
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Réservation à l'heure</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Membres & non-membres</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Accès vestiaires</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#a855f7" stroke-width="1"/><path d="M4 7l2.5 2.5L10 5" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round"/></svg>Pas d'engagement</li>
+      </ul>
+      <a href="tel:0383985539" class="price-btn">03 83 98 55 39</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="div-sep">
+
+<!-- ── GALLERY ── -->
+<div class="s-wrap" id="gallery" style="background:var(--bg2)">
+<div class="section">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-bottom:0">
+    <div><div class="s-label">Galerie</div><h2 class="s-title">Le club<br><span class="g">en images.</span></h2></div>
+    <p class="s-desc" style="max-width:280px">Découvrez nos installations et l'ambiance unique du LTC Nancy.</p>
+  </div>
+  <div class="gallery-masonry" id="galleryGrid">
+    <!-- Generated by JS -->
+  </div>
+</div>
+</div>
+
+<div class="lightbox" id="lightbox"><button class="lightbox-close" id="lbClose">✕</button><div class="lightbox-content" id="lbContent"></div></div>
+
+<hr class="div-sep">
+
+<!-- ── CONTACT ── -->
+<div class="s-wrap" id="contact">
+<div class="section">
+  <div class="s-label">Contact & Localisation</div>
+  <h2 class="s-title">On vous<br><span class="g">attend</span> sur<br>le court.</h2>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-info-item"><div class="ci-label">Adresse</div><div class="ci-val">23 rue Français<br>54000 Nancy<br><span style="font-size:.82rem;color:var(--mute)">Quartier Buthegnémont</span></div></div>
+      <div class="contact-info-item"><div class="ci-label">Téléphone</div><div class="ci-val"><a href="tel:0383985539">03 83 98 55 39</a></div></div>
+      <div class="contact-info-item"><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:lawn.nancy@gmail.com">lawn.nancy@gmail.com</a></div></div>
+      <div class="contact-info-item"><div class="ci-label">Horaires</div>
+        <div class="ci-val" style="font-size:.85rem">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>Lun – Dim</span><strong style="color:#fff">07:00 – 22:00</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>Accès membres</span><strong style="color:var(--p3)">24h/24</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0"><span>Parking</span><span style="color:var(--dim)">Disponible</span></div>
+        </div>
+      </div>
+      <!-- Map placeholder -->
+      <div style="border:1px solid var(--border);background:var(--surface);height:160px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+        <div style="text-align:center"><div style="font-size:2rem;margin-bottom:6px">📍</div><div style="font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)">Nancy · 54000</div></div>
+        <a href="https://maps.google.com/?q=23+rue+Français+54000+Nancy" target="_blank" rel="noopener" style="position:absolute;inset:0"></a>
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad2)"></div>
+        <div style="position:absolute;bottom:10px;right:12px;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)">Ouvrir Maps →</div>
+      </div>
+    </div>
+    <div id="cfWrap">
+      <form class="contact-form" id="cf" onsubmit="handleCF(event)">
+        <div class="cf-row">
+          <div class="cf-group"><label class="cf-label">Nom *</label><input class="cf-input" type="text" placeholder="Votre nom" required></div>
+          <div class="cf-group"><label class="cf-label">Email *</label><input class="cf-input" type="email" placeholder="votre@email.fr" required></div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-group"><label class="cf-label">Téléphone</label><input class="cf-input" type="tel" placeholder="06 xx xx xx xx"></div>
+          <div class="cf-group"><label class="cf-label">Sujet</label>
+            <select class="cf-select">
+              <option value="">Choisir...</option>
+              <option>Adhésion</option><option>Cours / École</option><option>Stage</option><option>Location de court</option><option>Tournoi</option><option>Autre</option>
+            </select>
+          </div>
+        </div>
+        <div class="cf-group"><label class="cf-label">Message *</label><textarea class="cf-textarea" placeholder="Votre message..." required></textarea></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+          <span style="font-size:.7rem;color:var(--mute)">* Champs obligatoires</span>
+          <button type="submit" class="cf-submit">Envoyer le message →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">LTC NANCY</div>
+        <p class="footer-brand-desc">Lawn Tennis Club de Nancy — Association sportive premium fondée en 1987. 7 courts, école de tennis, stages et tournois dans le quartier de Buthegnémont.</p>
+        <div class="footer-contact">
+          <a href="#">23 rue Français, 54000 Nancy</a>
+          <a href="tel:0383985539">03 83 98 55 39</a>
+          <a href="mailto:lawn.nancy@gmail.com">lawn.nancy@gmail.com</a>
+          <a href="http://www.lawntennis-nancy.fr">www.lawntennis-nancy.fr</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Club</div>
+        <ul class="footer-links"><li><a href="#about">À propos</a></li><li><a href="#about">Histoire</a></li><li><a href="#about">Valeurs</a></li><li><a href="#courts">Installations</a></li></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Pratique</div>
+        <ul class="footer-links"><li><a href="#school">École de tennis</a></li><li><a href="#stages">Stages</a></li><li><a href="#tournaments">Tournois</a></li><li><a href="#courts">Location courts</a></li></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Informations</div>
+        <ul class="footer-links"><li><a href="#pricing">Tarifs</a></li><li><a href="#courts">Horaires</a></li><li><a href="#contact">Contact</a></li><li><a href="#contact">Accès</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Lawn Tennis Club de Nancy · Association loi 1901 · Code APE 93.12Z</div>
+      <div class="footer-status"><div class="dot"></div>Ouvert · 07:00 – 22:00</div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /page -->
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ══════════════════════════════════════
+   CURSOR
+══════════════════════════════════════ */
+const cur = document.getElementById('cur');
+const curf = document.getElementById('curf');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function loop(){fx+=(mx-fx)*.12;fy+=(my-fy)*.12;curf.style.left=fx+'px';curf.style.top=fy+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,[data-c]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.5)';curf.style.opacity='0'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curf.style.opacity='1'});
+});
+
+/* ══════════════════════════════════════
+   SCROLL PROGRESS
+══════════════════════════════════════ */
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  prog.style.width=((h.scrollTop/(h.scrollHeight-h.clientHeight))*100)+'%';
+},{passive:true});
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60),{passive:true});
+document.querySelectorAll('.nav-link,.nav-cta,[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=a.getAttribute('href');
+    if(t&&t.startsWith('#')){
+      const el=document.querySelector(t);
+      if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'})}
+    }
+  });
+});
+
+/* ══════════════════════════════════════
+   THREE.JS INTRO — BALLE 3D CINÉMATIQUE
+══════════════════════════════════════ */
+(function(){
+  const overlay=document.getElementById('intro');
+  const canvas=document.getElementById('intro-canvas');
+  const counter=document.getElementById('intro-counter');
+  const logoEl=document.getElementById('intro-logo');
+  const bar=document.getElementById('intro-bar');
+  const skip=document.getElementById('intro-skip');
+
+  // Renderer
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.2;
+  renderer.shadowMap.enabled=true;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.setClearColor(0x000000,1);
+
+  // Scene
+  const scene=new THREE.Scene();
+  scene.fog=new THREE.Fog(0x000000,8,25);
+
+  // Camera
+  const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.1,100);
+  camera.position.set(0,0,7);
+
+  // Resize
+  window.addEventListener('resize',()=>{
+    renderer.setSize(innerWidth,innerHeight);
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+  });
+
+  /* ── TENNIS BALL TEXTURE (Canvas 1024px) ── */
+  function makeBallTexture(){
+    const c=document.createElement('canvas');c.width=1024;c.height=1024;
+    const cx=c.getContext('2d');
+    // Base felt — authentic yellow-green
+    const bg=cx.createRadialGradient(512,400,0,512,512,560);
+    bg.addColorStop(0,'#ddf04a');bg.addColorStop(.35,'#cce040');bg.addColorStop(.7,'#b8cc30');bg.addColorStop(1,'#96aa20');
+    cx.fillStyle=bg;cx.fillRect(0,0,1024,1024);
+    // Felt noise — many tiny fibers
+    cx.globalCompositeOperation='overlay';
+    for(let i=0;i<6000;i++){
+      const x=Math.random()*1024,y=Math.random()*1024;
+      const r=Math.random()*1.2+.2;
+      const a=Math.random()*.12;
+      cx.fillStyle=Math.random()>.5?`rgba(255,255,255,${a})`:`rgba(0,0,0,${a})`;
+      cx.beginPath();cx.arc(x,y,r,0,Math.PI*2);cx.fill();
+    }
+    cx.globalCompositeOperation='source-over';
+    // Shadow underside — makes it look 3D
+    const shadow=cx.createRadialGradient(512,900,0,512,512,650);
+    shadow.addColorStop(0,'rgba(0,0,0,.35)');shadow.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=shadow;cx.fillRect(0,0,1024,1024);
+    // Highlight top — makes it look 3D
+    const hi=cx.createRadialGradient(380,180,0,380,180,280);
+    hi.addColorStop(0,'rgba(255,255,255,.28)');hi.addColorStop(1,'rgba(255,255,255,0)');
+    cx.fillStyle=hi;cx.fillRect(0,0,1024,1024);
+    // Seams — authentic tennis ball seam shape
+    cx.strokeStyle='rgba(255,255,255,0.92)';cx.lineWidth=14;cx.lineCap='round';cx.lineJoin='round';
+    // Left seam
+    cx.beginPath();cx.moveTo(180,130);cx.bezierCurveTo(280,260,320,600,220,860);cx.stroke();
+    cx.beginPath();cx.moveTo(220,110);cx.bezierCurveTo(320,240,360,580,260,840);cx.stroke();
+    // Right seam
+    cx.beginPath();cx.moveTo(844,130);cx.bezierCurveTo(744,260,704,600,804,860);cx.stroke();
+    cx.beginPath();cx.moveTo(804,110);cx.bezierCurveTo(704,240,664,580,764,840);cx.stroke();
+    // Seam shadow for depth
+    cx.strokeStyle='rgba(0,0,0,0.18)';cx.lineWidth=18;
+    cx.beginPath();cx.moveTo(180,130);cx.bezierCurveTo(280,260,320,600,220,860);cx.stroke();
+    cx.strokeStyle='rgba(255,255,255,0.92)';cx.lineWidth=14;
+    cx.beginPath();cx.moveTo(180,130);cx.bezierCurveTo(280,260,320,600,220,860);cx.stroke();
+    return new THREE.CanvasTexture(c);
+  }
+
+  /* ── BALL ── */
+  const ballTex=makeBallTexture();
+  const ballGeo=new THREE.SphereGeometry(1.2,128,128);
+  const ballMat=new THREE.MeshStandardMaterial({map:ballTex,roughness:.55,metalness:.0});
+  const ball=new THREE.Mesh(ballGeo,ballMat);
+  ball.castShadow=true;
+  ball.position.set(0,0,0);
+  scene.add(ball);
+
+  /* ── GLOW SPHERE ── */
+  const glowGeo=new THREE.SphereGeometry(1.45,32,32);
+  const glowMat=new THREE.MeshBasicMaterial({color:0xa855f7,transparent:true,opacity:.06,side:THREE.FrontSide});
+  const glowSphere=new THREE.Mesh(glowGeo,glowMat);
+  scene.add(glowSphere);
+
+  /* ── FLOOR ── */
+  const floorGeo=new THREE.PlaneGeometry(30,30);
+  const floorMat=new THREE.MeshStandardMaterial({color:0x0d0020,roughness:.9,metalness:.1});
+  const floor=new THREE.Mesh(floorGeo,floorMat);
+  floor.rotation.x=-Math.PI/2;floor.position.y=-1.8;floor.receiveShadow=true;
+  scene.add(floor);
+  // Floor glow disc
+  const discGeo=new THREE.CircleGeometry(2,64);
+  const discMat=new THREE.MeshBasicMaterial({color:0x7c3aed,transparent:true,opacity:.18,side:THREE.DoubleSide});
+  const disc=new THREE.Mesh(discGeo,discMat);
+  disc.rotation.x=-Math.PI/2;disc.position.y=-1.79;
+  scene.add(disc);
+
+  /* ── PARTICLES ── */
+  const pCount=200;
+  const pGeo=new THREE.BufferGeometry();
+  const pPos=new Float32Array(pCount*3);
+  const pCol=new Float32Array(pCount*3);
+  for(let i=0;i<pCount;i++){
+    pPos[i*3]=( Math.random()-.5)*18;
+    pPos[i*3+1]=(Math.random()-.5)*12;
+    pPos[i*3+2]=(Math.random()-.5)*10-2;
+    const c=Math.random()>.5?new THREE.Color('#a855f7'):new THREE.Color('#ec4899');
+    pCol[i*3]=c.r;pCol[i*3+1]=c.g;pCol[i*3+2]=c.b;
+  }
+  pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+  pGeo.setAttribute('color',new THREE.BufferAttribute(pCol,3));
+  const pMat=new THREE.PointsMaterial({size:.06,vertexColors:true,transparent:true,opacity:.6,sizeAttenuation:true});
+  const particles=new THREE.Points(pGeo,pMat);
+  scene.add(particles);
+
+  /* ── GROUND RING ── */
+  const ringGeo=new THREE.RingGeometry(1.5,1.52,80);
+  const ringMat=new THREE.MeshBasicMaterial({color:0xa855f7,transparent:true,opacity:.3,side:THREE.DoubleSide});
+  const ring=new THREE.Mesh(ringGeo,ringMat);
+  ring.rotation.x=-Math.PI/2;ring.position.y=-1.8;
+  scene.add(ring);
+  const ring2Geo=new THREE.RingGeometry(2.5,2.52,80);
+  const ring2=new THREE.Mesh(ring2Geo,ringMat.clone());
+  ring2.rotation.x=-Math.PI/2;ring2.position.y=-1.8;
+  scene.add(ring2);
+
+  /* ── LIGHTS ── */
+  scene.add(new THREE.AmbientLight(0x100520,1.5));
+  // Key light — warm white from top-front-right
+  const key=new THREE.DirectionalLight(0xfff5ee,3.2);
+  key.position.set(5,8,6);key.castShadow=true;
+  key.shadow.mapSize.width=2048;key.shadow.mapSize.height=2048;
+  key.shadow.camera.near=0.1;key.shadow.camera.far=30;
+  scene.add(key);
+  // Fill — purple left
+  const fill=new THREE.DirectionalLight(0x8b2cf7,1.8);
+  fill.position.set(-6,1,3);scene.add(fill);
+  // Rim — pink from behind
+  const rim=new THREE.DirectionalLight(0xec4899,1.4);
+  rim.position.set(1,3,-6);scene.add(rim);
+  // Spot from above — creates dramatic shadow on floor
+  const spot=new THREE.SpotLight(0xd088ff,5,20,Math.PI/7,.4,2);
+  spot.position.set(0,10,2);spot.target.position.set(0,0,0);
+  spot.castShadow=true;spot.shadow.mapSize.width=1024;spot.shadow.mapSize.height=1024;
+  scene.add(spot,spot.target);
+  // Bounce — purple from below (floor bounce)
+  const bounce=new THREE.PointLight(0x6d28d9,.6,8);
+  bounce.position.set(0,-1.5,1);scene.add(bounce);
+
+  /* ── CAMERA PATH ── */
+  // Camera starts far, orbits around ball
+  let camTheta=0,camPhi=Math.PI/2,camR=7;
+  let phase='orbit'; // orbit → strike → fly → done
+  let strikeFrame=0;
+  let flyVX=0,flyVY=0,flyVZ=0;
+  let done=false;
+
+  /* ── LOGO CHARS ANIM ── */
+  setTimeout(()=>{
+    const spans=logoEl.querySelectorAll('h1 span');
+    spans.forEach((s,i)=>gsap.to(s,{y:0,duration:.9,ease:'power3.out',delay:i*.15}));
+  },400);
+
+  /* ── COUNTER ── */
+  let cv=0;
+  const cInt=setInterval(()=>{
+    cv+=Math.floor(Math.random()*12)+4;
+    if(cv>=100){cv=100;clearInterval(cInt);}
+    counter.textContent=cv;
+    bar.style.width=cv+'%';
+  },40);
+
+  /* ── END INTRO ── */
+  function endIntro(){
+    if(done)return;done=true;
+    clearInterval(cInt);
+    gsap.to(overlay,{
+      scaleY:0,transformOrigin:'bottom',duration:.9,ease:'power3.inOut',delay:.2,
+      onComplete:()=>{
+        overlay.style.display='none';
+        document.getElementById('page').classList.add('ready');
+        document.body.style.overflow='';
+        initScrollAnimations();
+      }
+    });
+  }
+  skip.addEventListener('click',()=>{
+    clearInterval(cInt);
+    gsap.to(overlay,{opacity:0,duration:.5,onComplete:()=>{
+      overlay.style.display='none';
+      document.getElementById('page').classList.add('ready');
+      document.body.style.overflow='';
+      initScrollAnimations();
+    }});
+  });
+
+  document.body.style.overflow='hidden';
+
+  /* ── RENDER LOOP ── */
+  let frame=0;
+  let animId;
+  function animate(){
+    animId=requestAnimationFrame(animate);
+    frame++;
+
+    // Particles drift
+    const pp=pGeo.attributes.position.array;
+    for(let i=0;i<pCount;i++){
+      pp[i*3+1]+=.003;
+      if(pp[i*3+1]>6)pp[i*3+1]=-6;
+    }
+    pGeo.attributes.position.needsUpdate=true;
+
+    // Ball constant rotation
+    ball.rotation.y+=.008;
+    ball.rotation.x+=.003;
+    // Glow sphere follows ball
+    glowSphere.position.copy(ball.position);
+    const gp=.06+Math.sin(frame*.04)*.02;
+    glowMat.opacity=gp;
+    disc.position.x=ball.position.x*.4;
+    disc.scale.setScalar(1+Math.sin(frame*.03)*.1);
+
+    // Rings pulse
+    const s=1+Math.sin(frame*.03)*.05;
+    ring.scale.set(s,s,s);
+    ring2.scale.set(1/s,1/s,1/s);
+
+    if(phase==='orbit'){
+      // Camera slowly orbits
+      camTheta+=.008;
+      const cx2=camR*Math.sin(camTheta)*Math.sin(camPhi);
+      const cy2=camR*Math.cos(camPhi)+Math.sin(frame*.015)*.3;
+      const cz2=camR*Math.cos(camTheta)*Math.sin(camPhi);
+      camera.position.set(cx2,cy2,cz2);
+      camera.lookAt(0,0,0);
+
+      // Slowly zoom in
+      if(camR>4)camR-=.01;
+
+      // After ~5s trigger strike
+      if(frame===300){phase='strike';strikeFrame=frame;}
+    }
+
+    if(phase==='strike'){
+      const t=(frame-strikeFrame)/30;
+      // Camera rushes toward ball
+      const zoom=Math.max(2.5,camR-t*2);
+      camera.position.multiplyScalar(zoom/camera.position.length());
+      camera.lookAt(0,0,0);
+
+      // Ball squash on impact
+      if(t>.6&&t<.9){
+        ball.scale.set(1+(.9-t)*2,.8,1+(.9-t)*2);
+      }else{ball.scale.set(1,1,1);}
+
+      if(t>=1){
+        phase='fly';
+        flyVX=.18;flyVY=.04;flyVZ=-.02;
+        ball.scale.set(1,1,1);
+        // Burst particles
+        for(let i=0;i<pCount;i++){
+          pp[i*3]=( Math.random()-.5)*3;
+          pp[i*3+1]=(Math.random()-.5)*3;
+          pp[i*3+2]=(Math.random()-.5)*3;
+        }
+        pGeo.attributes.position.needsUpdate=true;
+        pMat.opacity=1;
+      }
+    }
+
+    if(phase==='fly'){
+      ball.position.x+=flyVX;
+      ball.position.y+=flyVY;
+      ball.position.z+=flyVZ;
+      flyVY-=.003;
+      flyVX*=.98;
+      ball.rotation.y+=.06;
+
+      // Camera follows loosely
+      camera.position.x+=( ball.position.x*.3-camera.position.x)*.04;
+      camera.position.z+=(-3-camera.position.z)*.03;
+      camera.lookAt(ball.position);
+
+      // Fade particles
+      pMat.opacity=Math.max(0,pMat.opacity-.015);
+
+      if(ball.position.x>12||frame-strikeFrame>180){endIntro();}
+    }
+
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* ══════════════════════════════════════
+   SCROLL ANIMATIONS
+══════════════════════════════════════ */
+function initScrollAnimations(){
+
+  // Section reveals
+  document.querySelectorAll('.section').forEach(s=>{
+    const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){s.classList.add('vis');obs.unobserve(s);}},{threshold:.08});
+    obs.observe(s);
+  });
+
+  // Counter animation
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=+el.dataset.count;
+    const obs2=new IntersectionObserver(([e])=>{
+      if(e.isIntersecting){
+        obs2.unobserve(el);
+        let v=0;const step=target/60;
+        const id=setInterval(()=>{v=Math.min(v+step,target);el.textContent=Math.round(v);if(v>=target)clearInterval(id);},22);
+      }
+    },{threshold:.5});
+    obs2.observe(el);
+  });
+
+  // Hero entrance
+  gsap.fromTo('.hero-tag',{y:30,opacity:0},{y:0,opacity:1,duration:.8,ease:'power2.out',delay:.2});
+  gsap.fromTo('.hero-h1',{y:80,opacity:0},{y:0,opacity:1,duration:1.1,ease:'power3.out',delay:.35});
+  gsap.fromTo('.hero-sub',{y:30,opacity:0},{y:0,opacity:1,duration:.8,ease:'power2.out',delay:.55});
+  gsap.fromTo('.hero-ctas',{y:24,opacity:0},{y:0,opacity:1,duration:.7,ease:'power2.out',delay:.7});
+  gsap.fromTo('.hero-stat',{y:30,opacity:0},{y:0,opacity:1,duration:.6,stagger:.1,ease:'power2.out',delay:.85});
+
+  // Nav entrance
+  gsap.fromTo('#nav',{y:-60,opacity:0},{y:0,opacity:1,duration:1,ease:'power3.out',delay:.1});
+
+  // GSAP ScrollTrigger parallax for hero bg
+  gsap.to('.hero-bg',{yPercent:20,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+  // Section headings stagger on scroll
+  document.querySelectorAll('.s-title,.about-text-big').forEach(el=>{
+    gsap.fromTo(el,{y:50,opacity:0},{y:0,opacity:1,duration:.9,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}
+    });
+  });
+
+  // Cards stagger
+  document.querySelectorAll('.court-card,.school-card,.val-card,.tourn-card,.price-card,.stage-row').forEach((el,i)=>{
+    gsap.fromTo(el,{y:40,opacity:0},{y:0,opacity:1,duration:.7,ease:'power2.out',delay:(i%4)*.08,
+      scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}
+    });
+  });
+
+  // Marquee big text
+  gsap.utils.toArray('.about-text-big').forEach(el=>{
+    gsap.fromTo(el,{x:-40,opacity:0},{x:0,opacity:1,duration:1,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 85%'}
+    });
+  });
+}
+
+/* ══════════════════════════════════════
+   GALLERY BUILD
+══════════════════════════════════════ */
+const galleryData=[
+  {label:'Courts extérieurs',h:220,c1:'#1a0a2e',c2:'#2d0d50'},
+  {label:'Terre battue',h:300,c1:'#1a0620',c2:'#300a3c'},
+  {label:'Club house',h:240,c1:'#0a0a2e',c2:'#0d1050'},
+  {label:'Courts couverts',h:260,c1:'#0a1a1a',c2:'#0d3030'},
+  {label:'Terrasse',h:200,c1:'#1a1a0a',c2:'#353020'},
+  {label:'École de tennis',h:320,c1:'#1a0a10',c2:'#3d1025'},
+  {label:'Tournoi été',h:230,c1:'#080a1a',c2:'#10143d'},
+  {label:'Stage jeunes',h:280,c1:'#0e0a1a',c2:'#201535'},
+];
+const grid=document.getElementById('galleryGrid');
+galleryData.forEach((d,i)=>{
+  const div=document.createElement('div');
+  div.className='gallery-item';
+  div.innerHTML=`
+    <div class="gallery-placeholder" style="height:${d.h}px;background:linear-gradient(135deg,${d.c1},${d.c2})">
+      <svg viewBox="0 0 300 200" style="width:100%;height:100%">
+        <rect x="20" y="10" width="260" height="180" fill="none" stroke="rgba(168,85,247,.25)" stroke-width="1.5"/>
+        <line x1="20" y1="100" x2="280" y2="100" stroke="rgba(168,85,247,.2)" stroke-width="1"/>
+        <line x1="150" y1="10" x2="150" y2="190" stroke="rgba(168,85,247,.1)" stroke-width=".8"/>
+        <circle cx="${100+Math.random()*100}" cy="${60+Math.random()*80}" r="8" fill="rgba(192,132,252,.5)"/>
+      </svg>
+      <div class="gallery-overlay"><span class="gallery-lbl">${d.label}</span></div>
+      <div class="gallery-zoom"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 1H11v3.5M4.5 11H1V7.5M11 1L6.5 5.5M1 11l4.5-4.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+    </div>`;
+  div.addEventListener('click',()=>openLightbox(d.label,d.c1,d.c2));
+  grid.appendChild(div);
+});
+
+function openLightbox(label,c1,c2){
+  const lb=document.getElementById('lightbox');
+  const lbc=document.getElementById('lbContent');
+  lbc.innerHTML=`
+    <div style="height:60vh;background:linear-gradient(135deg,${c1},${c2});display:flex;align-items:center;justify-content:center;position:relative">
+      <svg viewBox="0 0 500 340" style="width:90%;opacity:.3">
+        <rect x="30" y="20" width="440" height="300" fill="none" stroke="rgba(168,85,247,.6)" stroke-width="2"/>
+        <line x1="30" y1="170" x2="470" y2="170" stroke="rgba(168,85,247,.5)" stroke-width="1.5"/>
+        <line x1="250" y1="20" x2="250" y2="320" stroke="rgba(168,85,247,.3)" stroke-width="1"/>
+      </svg>
+      <div style="position:absolute;bottom:16px;left:20px;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5)">${label}</div>
+    </div>`;
+  lb.classList.add('open');
+}
+document.getElementById('lbClose').addEventListener('click',()=>document.getElementById('lightbox').classList.remove('open'));
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lightbox').classList.remove('open')});
+
+/* ══════════════════════════════════════
+   CONTACT FORM
+══════════════════════════════════════ */
+function handleCF(e){
+  e.preventDefault();
+  const wrap=document.getElementById('cfWrap');
+  wrap.innerHTML=`<div class="cf-success">
+    <div class="cf-success-icon">✓</div>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;letter-spacing:.04em;margin-bottom:10px">Message envoyé !</h3>
+    <p style="color:var(--mute);font-size:.88rem">Nous vous répondrons dans les plus brefs délais.</p>
+    <button onclick="document.getElementById('cfWrap').innerHTML='<form class=contact-form id=cf onsubmit=handleCF(event)><div class=cf-row><div class=cf-group><label class=cf-label>Nom *</label><input class=cf-input type=text placeholder=Votre nom required></div><div class=cf-group><label class=cf-label>Email *</label><input class=cf-input type=email placeholder=votre@email.fr required></div></div><div class=cf-group><label class=cf-label>Message *</label><textarea class=cf-textarea placeholder=Votre message... required></textarea></div><div style=display:flex;justify-content:flex-end><button type=submit class=cf-submit>Envoyer →</button></div></form>'" style="margin-top:24px;background:none;border:1px solid var(--border2);color:var(--p3);padding:10px 24px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:6px">Nouveau message</button>
+  </div>`;
+}
+</script>
+</body>
+</html>
